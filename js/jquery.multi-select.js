@@ -86,23 +86,27 @@
           that.$selectableUl.focus();
         });
         if (that.options.sortable){
-          // we depend on jQueryUi for ordering so check if it is available
-          if (jQuery.ui) {
-            // initialize jQueryUi sortable
-            that.$selectionUl.sortable({
-              stop: function(event,ui){
-                that.sort();
-
-                ms.trigger('change');
-              },
-              axis: "y",
-              helper: "clone"
-            });
-            that.$selectionUl.disableSelection();
-            that.sort();
-          } else {
+          if (ms.attr("disabled")) {
             that.options.sortable = false;
-            console.warn('Please include jQueryUI if you want to use the sortable option. Sorting has been disabled.')
+          } else {
+            // we depend on jQueryUi for ordering so check if it is available
+            if (jQuery.ui) {
+              // initialize jQueryUi sortable
+              that.$selectionUl.sortable({
+                stop: function (event, ui) {
+                  that.sort();
+
+                  ms.trigger('change');
+                },
+                axis: "y",
+                helper: "clone"
+              });
+              that.$selectionUl.disableSelection();
+              that.sort();
+            } else {
+              that.options.sortable = false;
+              console.warn('Please include jQueryUI if you want to use the sortable option. Sorting has been disabled.')
+            }
           }
         }
       }
