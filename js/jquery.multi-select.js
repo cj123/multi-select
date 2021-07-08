@@ -92,11 +92,14 @@
             that.$selectionUl.sortable({
               stop: function(event,ui){
                 that.sort();
+
+                ms.trigger('change');
               },
               axis: "y",
               helper: "clone"
             });
             that.$selectionUl.disableSelection();
+            that.sort();
           } else {
             that.options.sortable = false;
             console.warn('Please include jQueryUI if you want to use the sortable option. Sorting has been disabled.')
@@ -418,12 +421,12 @@
           }
         }
         if (method !== 'init'){
+          that.sort();
           ms.trigger('change');
           if (typeof that.options.afterSelect === 'function') {
             that.options.afterSelect.call(this, value);
           }
         }
-        this.sort();
       }
     },
 
@@ -461,6 +464,7 @@
             }
           });
         }
+        that.sort();
         ms.trigger('change');
         if (typeof that.options.afterDeselect === 'function') {
           that.options.afterDeselect.call(this, value);
@@ -478,6 +482,7 @@
       this.$selectableUl.find('.ms-optgroup-label').hide();
       this.$selectionUl.find('.ms-elem-selection').filter(':not(.'+this.options.disabledClass+')').addClass('ms-selected').show();
       this.$selectionUl.focus();
+      this.sort();
       ms.trigger('change');
       if (typeof this.options.afterSelect === 'function') {
         var selectedValues = $.grep(ms.val(), function(item){
@@ -497,6 +502,7 @@
       this.$selectableUl.find('.ms-optgroup-label').show();
       this.$selectionUl.find('.ms-elem-selection').removeClass('ms-selected').hide();
       this.$selectableUl.focus();
+      this.sort();
       ms.trigger('change');
       if (typeof this.options.afterDeselect === 'function') {
         this.options.afterDeselect.call(this, values);
@@ -569,6 +575,6 @@
         $parent.children().eq(index - 1).after(this);
       }
     });
-};
+  };
 
 }(window.jQuery);
